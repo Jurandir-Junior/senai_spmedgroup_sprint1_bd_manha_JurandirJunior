@@ -6,28 +6,24 @@ SELECT * FROM TipoUsuario
 
 SELECT * FROM Especialidade
 
-SELECT Nome, CRM, Email,TipoUsuario.Titulo AS TipoUsuario, NomeFantasia AS Clinica, Especialidade.Titulo AS Especialidade FROM Medico
-INNER JOIN TipoUsuario ON Medico.IdTipoUsuario = TipoUsuario.IdTipoUsuario
+SELECT IdUsuario, Titulo AS TipoUsuario, Email, Senha FROM Usuario
+INNER JOIN TipoUsuario ON Usuario.IdTipoUsuario = TipoUsuario.IdTipoUsuario
+
+SELECT Usuario.IdUsuario, Nome, CRM, Email, NomeFantasia AS Clinica, Especialidade.Titulo AS Especialidade FROM Medico
+INNER JOIN Usuario ON Medico.IdUsuario = Usuario.IdUsuario
 INNER JOIN Clinica ON Medico.IdClinica = Clinica.IdClinica
 INNER JOIN Especialidade ON Medico.IdEspecialidade = Especialidade.IdEspecialidade
 WHERE Especialidade.IdEspecialidade = 3;
 
-SELECT Nome, Email,CAST(MONTH(DataNascimento) AS VARCHAR) + '/' +
+SELECT Usuario.IdUsuario, Nome,CAST(MONTH(DataNascimento) AS VARCHAR) + '/' +
 				   CAST(DAY(DataNascimento) AS VARCHAR) + '/' +
-				   CAST(YEAR(DataNascimento) AS VARCHAR) AS "DataNascimento", Telefone, RG, CPF, Endereço, Titulo AS TipoUsuario FROM Paciente
-INNER JOIN TipoUsuario ON Paciente.IdTipoUsuario = TipoUsuario.IdTipoUsuario
+				   CAST(YEAR(DataNascimento) AS VARCHAR) AS "DataNascimento", Telefone, RG, CPF, Endereço FROM Paciente
+INNER JOIN Usuario ON Paciente.IdUsuario = Usuario.IdUsuario
 
 SELECT Nome, DATEDIFF(YEAR,DataNascimento,GETDATE()) AS "Idade" FROM Paciente
-
-SELECT Email, Nome, Titulo AS TipoUsuario FROM Administrador
-INNER JOIN TipoUsuario ON Administrador.IdTipoUsuario = TipoUsuario.IdTipoUsuario
-
-SELECT DataAgendamento, DataConsulta, Nome AS Administrador FROM Agendamento
-INNER JOIN Administrador ON Agendamento.IdAdministrador = Administrador.IdAdministrador
 
 SELECT Situacao, Medico.Nome AS Medico, Paciente.Nome AS Paciente, DataConsulta FROM Consulta
 INNER JOIN Medico ON Consulta.IdMedico = Medico.IdMedico
 INNER JOIN Paciente ON Consulta.IdPaciente = Paciente.IdPaciente
-INNER JOIN Agendamento ON Consulta.IdAgendamento = Agendamento.IdAgendamento
-
+INNER JOIN Situacao ON Consulta.IdSituacao = Situacao.IdSituacao
 
